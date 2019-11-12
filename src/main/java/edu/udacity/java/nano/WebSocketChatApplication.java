@@ -27,7 +27,7 @@ public class WebSocketChatApplication {
 
     @GetMapping({"/"})
     public ModelAndView login() {
-        return new ModelAndView("/login");
+        return new ModelAndView("login");
     }
 
     @GetMapping({"/index"})
@@ -36,7 +36,7 @@ public class WebSocketChatApplication {
             username = "Anonymous";
         }
 
-        ModelAndView mav = new ModelAndView("/chat");
+        ModelAndView mav = new ModelAndView("chat");
         mav.addObject("username", username);
         mav.addObject("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chat");
         return mav;
