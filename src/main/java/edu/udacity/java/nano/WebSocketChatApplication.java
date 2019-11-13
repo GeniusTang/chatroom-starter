@@ -32,7 +32,7 @@ public class WebSocketChatApplication {
 
     @GetMapping({"/index"})
     public ModelAndView index(String username, HttpServletRequest request) throws UnknownHostException {
-        if (StringUtils.isEmpty(username)) {
+        if (username == null || username.isEmpty()) {
             username = "Anonymous";
         }
 
