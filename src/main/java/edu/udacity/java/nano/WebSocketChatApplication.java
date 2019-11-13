@@ -36,9 +36,9 @@ public class WebSocketChatApplication {
             username = "Anonymous";
         }
 
-        ModelAndView mav = new ModelAndView("chat");
-        mav.addObject("username", username);
-        mav.addObject("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chat");
-        return mav;
+        ModelAndView mv = new ModelAndView("chat");
+        mv.addObject("username", username);
+        mv.addObject("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chat");
+        return mv;
     }
 }
