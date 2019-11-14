@@ -2,10 +2,8 @@ package edu.udacity.java.nano.chat;
 
 import com.alibaba.fastjson.JSON;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.websocket.*;
-import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Map;
