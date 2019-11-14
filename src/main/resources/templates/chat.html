@@ -90,6 +90,7 @@
          */
         webSocket.onopen = function (event) {
             console.log('WebSocket open connection');
+            webSocket.send(JSON.stringify({username: $('#username').text(), type: "ENTER"}));
         };
 
         /**
@@ -105,6 +106,18 @@
                     '<div class="mdui-card" style="margin: 10px 0;">' +
                     '<div class="mdui-card-primary">' +
                     '<div class="mdui-card-content message-content">' + message.username + "：" + message.msg + '</div>' +
+                    '</div></div>');
+            } else if (message.type === 'ENTER') {
+                $messageContainer.append(
+                    '<div class="mdui-card" style="margin: 10px 0;">' +
+                    '<div class="mdui-card-primary">' +
+                    '<div class="mdui-card-content message-content">' + message.username + " has joined chat." + '</div>' +
+                    '</div></div>');
+            } else {
+                $messageContainer.append(
+                    '<div class="mdui-card" style="margin: 10px 0;">' +
+                    '<div class="mdui-card-primary">' +
+                    '<div class="mdui-card-content message-content">' + message.username + " has left chat." + '</div>' +
                     '</div></div>');
             }
             $('.chat-num').text(message.onlineCount);
@@ -141,7 +154,7 @@
     function sendMsgToServer() {
         var $message = $('#msg');
         if ($message.val()) {
-            webSocket.send(JSON.stringify({username: $('#username').text(), msg: $message.val()}));
+            webSocket.send(JSON.stringify({username: $('#username').text(), msg: $message.val(), type: "SPEAK"}));
             $message.val(null);
         }
     }

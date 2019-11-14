@@ -26,6 +26,7 @@ public class WebSocketChatServer {
      * All chat sessions.
      */
     private static Map<String, Session> onlineSessions = new ConcurrentHashMap<>();
+    private static Map<String, String> sessionUserName = new ConcurrentHashMap<>();
 
     private static void sendMessageToAll(String msg){
         //TODO: add send message method.
@@ -45,7 +46,7 @@ public class WebSocketChatServer {
     public void onOpen(Session session) {
         //TODO: add on open connection.
         onlineSessions.put(session.getId(), session);
-        sendMessageToAll(new Message("ENTER", "", "", onlineSessions.size()).toString());
+        //sendMessageToAll(new Message("ENTER", session.getQueryString(), "", onlineSessions.size()).toString());
     }
 
     /**
@@ -55,7 +56,10 @@ public class WebSocketChatServer {
     public void onMessage(Session session, String jsonStr) {
         //TODO: add send message.
         Message message = JSON.parseObject(jsonStr, Message.class);
-        sendMessageToAll(new Message("SPEAK", message.getUsername(), message.getMsg(), onlineSessions.size()).toString());
+        if (message.getType().equals("ENTER")) {
+            sessionUserName.put(session.getId(), message.getUsername());
+        }
+        sendMessageToAll(new Message(message.getType(), message.getUsername(), message.getMsg(), onlineSessions.size()).toString());
     }
 
     /**
@@ -64,8 +68,9 @@ public class WebSocketChatServer {
     @OnClose
     public void onClose(Session session) {
         //TODO: add close connection.
-        onlineSessions.remove(session.getId());
-        sendMessageToAll(new Message("QUIT", "", "", onlineSessions.size()).toString());
+        String sessionId = session.getId();
+        onlineSessions.remove(sessionId);
+        sendMessageToAll(new Message("QUIT", sessionUserName.remove(sessionId), "", onlineSessions.size()).toString());
     }
 
     /**
